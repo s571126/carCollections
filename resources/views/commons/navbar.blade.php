@@ -11,9 +11,9 @@
             <ul class="navbar-nav mr-auto"></ul>
             <ul class="navbar-nav">
                 {{-- ユーザ登録ページへのリンク --}}
-                <li class="nav-item">user.name</li>
-                {{-- ログインページへのリンク --}}
-                <li class="nav-item"><a href="#" class="nav-link">ログアウト</a></li>
+                <li class="nav-item text-white mr-4">{{ Auth::user()->name }}</li>
+                {{-- ログアウトへのリンク --}}
+                <li class="nav-item">{!! link_to_route('logout.get', 'ログアウト') !!}</li>
             </ul>
         </div>
     </nav>
