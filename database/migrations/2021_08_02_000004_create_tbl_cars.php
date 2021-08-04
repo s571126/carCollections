@@ -24,7 +24,7 @@ class CreateTblCars extends Migration
             $table->integer('made_year');  //製造年（西暦）
             $table->integer('mileage');  //走行距離
             $table->integer('displacement');  //排気量
-            $table->string('memo');  //備考
+            $table->string('memo')->nullable();  //備考
             $table->unsignedBigInteger('created_user_id');  //登録者
             $table->timestamps();
             

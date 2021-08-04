@@ -23,8 +23,8 @@ Route::get('logout', 'Auth\LoginController@logout')->name('logout.get');
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/', 'CarsController@index');
-    Route::get('cars/{id}', 'CarsController@show')->name('cars.show');
-    Route::get('cars/create', 'CarsController@create')->name('cars.create');
+    Route::get('cars_show/{id}', 'CarsController@show')->name('cars.show');
+    Route::get('cars_create', 'CarsController@create')->name('cars.create');
     Route::post('cars', 'CarsController@store')->name('cars.store');
     Route::get('cars/{id}/edit', 'CarsController@edit')->name('cars.edit');
     Route::put('cars/{id}', 'CarsController@update')->name('cars.update');
