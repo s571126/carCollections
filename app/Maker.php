@@ -20,4 +20,15 @@ class Maker extends Model
     {
         return $this->hasMany(Car::class);
     }
+    
+    public static function makerSelectlist()
+    {
+        $makers = Maker::all();
+        $list = array();
+        $list += array( "" => "選択してください" ); //selectlistの先頭を空に
+        foreach ($makers as $maker) {
+           $list += array( $maker->id => $maker->maker );
+        }
+        return $list;
+    }
 }

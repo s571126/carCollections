@@ -98,16 +98,43 @@
                 </div>
             </div>
             <!-- 車両一覧（行）を表示 -->
-            <!-- 後でincludeに変更 -->
             <div class="mt-2 border">        
-                <div>画像（フロント）を表示</div>
-                <p class="mt-2">{!! link_to_route('signup.get', '車名をテーブルから持ってきて表示') !!}</p>            
-                <input type="submit" class="btn btn-primary" value="編集">
-                <input type="submit" class="btn btn-danger" value="削除">
+                @foreach($cars as $car)
+                    <div class="form-group row border-bottom p-2">
+                        <div class="col-md-2">画像（フロント）を表示</div>
+                        {{-- 車両詳細フォーム --}}
+                        <div class="col-md-6">
+                            <p class="mt-2 pb-3 border-bottom">{!! link_to_route('cars.show', $car->car_name, ['id' => $car->id]) !!}</p>
+                            <p class="mt-2">{{$car->memo}}</p>
+                        </div>
+                        <div class="col-md-1 mt-2 small text-center">
+                            <span style="text-decoration: underline;">年式</span>
+                            <p>{{$car->made_year}}年</p>
+                            <span style="text-decoration: underline;">本体価格</span>
+                            <p>{{$car->price}}円</p>
+                        </div>
+                        <div class="col-md-1 mt-2 small text-center">
+                            <span style="text-decoration: underline;">走行距離</span>
+                            <p>{{$car->mileage}}km</p>
+                            <span style="text-decoration: underline;">支払総額</span>
+                            <div><span class="text-warning font-weight-bold">{{$car->total_price}}</span>円</div>
+                        </div>
+                        <div class="col-md-2">
+                            {{-- 車両編集フォーム --}}
+                            {!! Form::open(['route' => ['cars.edit', $car->id], 'method' => 'get']) !!}
+                                {!! Form::submit('編集', ['class' => 'btn btn-primary']) !!}
+                            {!! Form::close() !!}
+                            {{-- 車両削除フォーム --}}
+                            {!! Form::open(['route' => ['cars.destroy', $car->id], 'method' => 'delete']) !!}
+                                {!! Form::submit('削除', ['class' => 'btn btn-danger']) !!}
+                            {!! Form::close() !!}
+                        </div>
+                    </div>
+                @endforeach
             </div>
             <div class="text-center mt-4">
                 <!-- ページネーションのリンク -->
-                ページネーション
+                {{ $cars->links() }}
             </div>
         </div>
     </div>

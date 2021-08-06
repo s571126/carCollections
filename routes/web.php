@@ -25,8 +25,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/', 'CarsController@index');
     Route::get('cars_show/{id}', 'CarsController@show')->name('cars.show');
     Route::get('cars_create', 'CarsController@create')->name('cars.create');
-    Route::post('cars', 'CarsController@store')->name('cars.store');
-    Route::get('cars/{id}/edit', 'CarsController@edit')->name('cars.edit');
-    Route::put('cars/{id}', 'CarsController@update')->name('cars.update');
-    Route::delete('cars/{id}', 'CarsController@destroy')->name('cars.destroy');
+    Route::post('cars_store', 'CarsController@store')->name('cars.store');
+    Route::get('cars_edit/{id}', 'CarsController@edit')->name('cars.edit');
+    Route::put('cars_update/{id}', 'CarsController@update')->name('cars.update');
+    Route::delete('cars_destroy/{id}', 'CarsController@destroy')->name('cars.destroy');
 });

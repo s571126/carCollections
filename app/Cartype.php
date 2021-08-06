@@ -20,4 +20,15 @@ class Cartype extends Model
     {
         return $this->hasMany(Car::class);
     }
+    
+    public static function cartypeSelectlist()
+    {
+        $types = Cartype::all();
+        $list = array();
+        $list += array( "" => "選択してください" ); //selectlistの先頭を空に
+        foreach ($types as $type) {
+           $list += array( $type->id => $type->cartype );
+        }
+        return $list;
+    }
 }
