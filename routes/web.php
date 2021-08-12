@@ -29,4 +29,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('cars_edit/{id}', 'CarsController@edit')->name('cars.edit');
     Route::put('cars_update/{id}', 'CarsController@update')->name('cars.update');
     Route::delete('cars_destroy/{id}', 'CarsController@destroy')->name('cars.destroy');
+    Route::get('cars_copy/{id}', 'CarsController@copy')->name('cars.copy');
+    Route::post('cars_image', 'CarsController@image_upload')->name('cars.image');
+    Route::delete('pictures_destroy/{id}', 'CarsController@destroyPictures')->name('pictures.destroy');    
 });

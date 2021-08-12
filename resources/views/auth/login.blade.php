@@ -16,14 +16,14 @@
         </div>
     
         <div class="mt-4 row">
-            <div class="col-md-6 pr-4 text-right">
+            <div class="col-md-7 pr-4">
                 <!-- 画像を表示 -->
-                あとで画像を表示する
+                <img src="/jeep.jpg" alt="Jeep画像" class="img-fluid">
             </div>
             <!-- 576px以上の画面幅のとき、右側は6つ分のカラム幅で表示する指定を追加 -->
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="row">
-                    <div class="col-sm-6 pl-4">
+                    <div class="col-sm-8 pl-4">
             
                         {!! Form::open(['route' => 'login.post']) !!}
                             <div class="form-group">

@@ -10,6 +10,7 @@ use App\Cartype;
 use App\Maker;
 use App\Picture;
 use App\User;
+use Storage;
 
 class CarsController extends Controller
 {
@@ -99,12 +100,30 @@ class CarsController extends Controller
     
     public function show($id)
     {
-        // idの値でメッセージを検索して取得
+        $data = [];
+        // idの値で車両を検索して取得
         $car = Car::findOrFail($id);
+        $data['car'] = $car;
+        
+        // $data['car']=Car::with('pictures')->find($id);
+        $data['maker']= Maker::find($car->maker_id);
+        $data['type']= Cartype::find($car->cartype_id);
+        $data['color']= CarColor::find($car->carcolor_id);
+
+        $carImages = [
+            '/noimage.png',
+            '/noimage.png',
+            '/noimage.png',
+            '/noimage.png',
+            '/noimage.png',
+        ];
+        foreach ($car->pictures as $picture) {
+            $carImages[$picture->parts_code - 1] = $picture->parts_path;
+        }
+        $data['carImages']= $carImages;
+
         // cars.showビューで表示
-        return view('cars.show', [
-            'car' => $car,
-        ]);
+        return view('cars.show', $data);
     }
     
     /**
@@ -200,4 +219,111 @@ class CarsController extends Controller
         // トップページへリダイレクトさせる
         return redirect('/');
     }
+    
+    public function copy($id)
+    {
+        $data = [];
+        // idの値でタスクを検索して取得
+        $car = Car::findOrFail($id);
+        $data['car'] = $car;
+
+        //年式を作成
+        $year = date('Y');
+        $years = array();
+        $years += array( "" => "選択してください" ); //selectlistの先頭を空に
+        $years += array( $year => $year );
+        for($i = 1; $i < 20; $i++){
+            $years += array(($year - $i) => ($year - $i)) ;
+        }
+        $data['years'] = $years;
+
+        //車両を保有しているユーザーかチェック
+        if ($car->created_user_id == \Auth::id()){
+            // タスク編集ビューでそれを表示
+            return view('cars.copy', $data);
+        }else{
+            // トップページへリダイレクトさせる
+            return redirect('/');
+        }
+    }
+    
+    public function image_upload(Request $request)
+    {
+        
+        // バリデーション
+        $request->validate([
+            'image' => 'required|mimes:jpg,png',
+        ]);
+        
+        $picture = new Picture;
+        $car = Car::findOrFail($request->id);
+        
+        $form = $request->all();
+
+        //拡張子付きでファイル名を取得
+        $filename = $request->file("image")->getClientOriginalName();
+
+        //アップロードした画像（部位）を取得
+        $array = $request->input();
+        $keys = array_keys($array);
+        $parts =$keys[1];
+        
+        //s3アップロード開始
+        $image = $request->file('image');
+        // バケットの`carImage`フォルダへアップロード
+        $path = Storage::disk('s3')->putFileAs('carImage/'.$car->car_name."/".$parts, $image, $filename,'public');
+        // アップロードした画像のフルパスを取得
+        $picture->parts_path_del = $path;
+        $picture->parts_path = Storage::disk('s3')->url($path);
+        
+        // 1:front 2:rear 3:interior 4:side 5:other
+        switch($parts){
+            case "front":
+                $parts_code = 1;
+                break;
+            case "rear":
+                $parts_code = 2;
+                break;
+            case "interior":
+                $parts_code = 3;
+                break;
+            case "side":
+                $parts_code = 4;
+                break;
+            default:
+                $parts_code = 5;
+        }
+        $picture->parts_code = $parts_code;
+        $picture->car_id = $car->id;
+        $picture->save();
+    
+        return redirect()->route('cars.show', ['id' => $car->id]);
+    }
+
+    public function destroyPictures(Request $request , $id)
+    {
+
+        if (isset($request->checks)){
+            foreach($request->checks as $check){
+                if (!$check) {
+                    continue ;
+                }
+                //tbl_pictureから削除対象データを取得
+                $picture = Picture::where('car_id', $id )
+                                ->where('parts_code', $check )
+                                ->first();
+                //S3から画像データを削除   
+                $s3_delete = Storage::disk('s3')->delete($picture->parts_path_del);
+                //tbl_picturesからデータを削除
+                $db_delete = Picture::where('car_id', $id)
+                                ->where('parts_code', $check )
+                                ->delete();
+            }
+        }
+
+        // トップページへリダイレクトさせる
+        return redirect()->route('cars.show', ['id' => $id]);
+
+    }
+    
 }

@@ -54,12 +54,7 @@
                 <label class="col-form-label col-md-2">登録日</label>
                 <!-- 576px以上の画面幅のとき、フォーム部品は2つ分のカラム幅で表示する指定を追加 -->
                 <!-- 登録日セレクトボックス（？？？） -->
-                <select class="form-select col-md-2">
-                    <option selected></option>
-                    <option value="1">2021/07/30</option>
-                    <option value="2">2021/08/01</option>
-                    <option value="3">2021/08/02</option>
-                </select>
+                <input class=col-md-2" type=date>
                 
                 <!-- 576px以上の画面幅のとき、ラベルは2つ分のカラム幅で表示する指定を追加 -->
                 <label class="col-form-label col-md-2">色</label>
@@ -120,14 +115,16 @@
                             <div><span class="text-warning font-weight-bold">{{$car->total_price}}</span>円</div>
                         </div>
                         <div class="col-md-2">
-                            {{-- 車両編集フォーム --}}
-                            {!! Form::open(['route' => ['cars.edit', $car->id], 'method' => 'get']) !!}
-                                {!! Form::submit('編集', ['class' => 'btn btn-primary']) !!}
-                            {!! Form::close() !!}
-                            {{-- 車両削除フォーム --}}
-                            {!! Form::open(['route' => ['cars.destroy', $car->id], 'method' => 'delete']) !!}
-                                {!! Form::submit('削除', ['class' => 'btn btn-danger']) !!}
-                            {!! Form::close() !!}
+                            @if ($car->created_user_id == \Auth::id())                        
+                                {{-- 車両編集フォーム --}}
+                                {!! Form::open(['route' => ['cars.edit', $car->id], 'method' => 'get']) !!}
+                                    {!! Form::submit('編集', ['class' => 'btn btn-primary']) !!}
+                                {!! Form::close() !!}
+                                {{-- 車両削除フォーム --}}
+                                {!! Form::open(['route' => ['cars.destroy', $car->id], 'method' => 'delete']) !!}
+                                    {!! Form::submit('削除', ['class' => 'btn btn-danger']) !!}
+                                {!! Form::close() !!}
+                            @endif
                         </div>
                     </div>
                 @endforeach

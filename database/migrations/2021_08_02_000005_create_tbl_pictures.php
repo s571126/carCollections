@@ -18,6 +18,7 @@ class CreateTblPictures extends Migration
             $table->unsignedBigInteger('car_id');
             $table->integer('parts_code');
             $table->string('parts_path');
+            $table->string('parts_path_del');
             $table->timestamps();
             
             // 外部キー制約
