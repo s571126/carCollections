@@ -26,9 +26,9 @@
                 <select class="form-select col-md-2" name=price_id>
                     <option value="" selected>選択してください</option>
                     <option value="1">～999999</option>
-                    <option value="2">1,000,000～1,999,999</option>
-                    <option value="3">2,000,000～2,999,999</option>
-                    <option value="4">3,000,000～</option>
+                    <option value="2">1,000,000～2,999,999</option>
+                    <option value="3">3,000,000～4,999,999</option>
+                    <option value="4">5,000,000～</option>
                 </select>
                 
                 {{ form::label('created_at','登録日', ['class' => 'form-check-label col-md-2']) }}

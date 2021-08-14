@@ -37,13 +37,13 @@ class searchCarsController extends Controller
                     $query->where('total_price','<=',1000000);
                     break;
                 case 2 :
-                    $query->whereBetween('total_price',[1000000,1999999]);
+                    $query->whereBetween('total_price',[1000000,2999999]);
                     break;
                 case 3 :
-                    $query->whereBetween('total_price',[2000000,2999999]);
+                    $query->whereBetween('total_price',[3000000,4999999]);
                     break;
                 case 4 :
-                    $query->where('total_price','>=',3000000);
+                    $query->where('total_price','>=',5000000);
                     break;
                 default:
             }
