@@ -55,7 +55,7 @@
         <div class="mt-2 p-4">
             <div class="d-flex flex-row justify-content-between">
                 <div>
-                    xxxxx / xxxxx 台     <!-- 検索してヒットした件数/車両テーブル全件数-->
+                    {{$cars_getcnt}} / {{$cars_totalcnt}} 台     <!-- 検索してヒットした件数/車両テーブル全件数-->
                 </div>
                 <div class="d-flex flex-row justify-content-between">
                     <div>

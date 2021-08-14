@@ -26,6 +26,9 @@ class CarsController extends Controller
         $data['colors'] = CarColor::carColorSelectlist(); 
         //tbl_carsを取得
         $data['cars'] = Car::paginate(10);
+        $car_totalcnt = Car::count();
+        $data['cars_totalcnt'] = $car_totalcnt;
+        $data['cars_getcnt'] = $car_totalcnt;
 
         // cars.indexビューでそれらを表示
         return view('cars.index', $data);
@@ -205,6 +208,18 @@ class CarsController extends Controller
         
         //車両を登録したユーザーかチェック
         if ($car->created_user_id == \Auth::id()){
+
+            $pictures = Picture::where('car_id',$car->id)->get();
+            if ($pictures){
+                foreach($pictures as $picture){
+                    //S3から画像データを削除   
+                    $s3_delete = Storage::disk('s3')->delete($picture->parts_path_del);
+                    //tbl_picturesからデータを削除
+                    $db_delete = Picture::where('car_id', $picture->car_id)
+                                        ->where('parts_code', $picture->parts_code )
+                                        ->delete();
+                }
+            }
             // 車両を削除
             $car->delete();
         }

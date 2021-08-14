@@ -55,6 +55,8 @@ class searchCarsController extends Controller
             $query->where('carcolor_id',$carcolor_id);
         }
         $data['cars'] = $query->paginate(10);
+        $data['cars_getcnt'] = $query->count();
+        $data['cars_totalcnt'] = Car::count();
         
         //mst_makersを取得
         $data['makers'] = Maker::makerSelectlist();
