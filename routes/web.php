@@ -31,5 +31,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('cars_destroy/{id}', 'CarsController@destroy')->name('cars.destroy');
     Route::get('cars_copy/{id}', 'CarsController@copy')->name('cars.copy');
     Route::post('cars_image', 'CarsController@image_upload')->name('cars.image');
-    Route::delete('pictures_destroy/{id}', 'CarsController@destroyPictures')->name('pictures.destroy');    
+    Route::delete('pictures_destroy/{id}', 'CarsController@destroyPictures')->name('pictures.destroy');
+    
+    Route::get('cars_search', 'searchCarsController@searchCars')->name('cars.search');
+    
+    Route::get('cars_csv', 'CarsCsvController@csvCars')->name('cars.csv');
+    Route::get('cars_excel', 'CarsExcelController@excelCars')->name('cars.excel');
 });

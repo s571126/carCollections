@@ -19,11 +19,11 @@ class CarsController extends Controller
         $data = [];
         
         //mst_makersを取得
-        $data['makers'] = Maker::all();
+        $data['makers'] = Maker::makerSelectlist();
         //mst_cartypesを取得
-        $data['types'] = Cartype::all(); 
+        $data['types'] = Cartype::cartypeSelectlist();
         //mst_carcolorsを取得
-        $data['colors'] = CarColor::all(); 
+        $data['colors'] = CarColor::carColorSelectlist(); 
         //tbl_carsを取得
         $data['cars'] = Car::paginate(10);
 
@@ -36,21 +36,13 @@ class CarsController extends Controller
         
         $data['car'] = new Car;
         //mst_makersを取得
-        $maker = Maker::all(); 
-        $data['makers'] = (array)$maker;
+        $data['makers'] = Maker::makerSelectlist();
         //mst_cartypesを取得
-        $data['types'] = Cartype::all(); 
+        $data['types'] = Cartype::cartypeSelectlist();
         //mst_carcolorsを取得
-        $data['colors'] = CarColor::all(); 
-
+        $data['colors'] = CarColor::carColorSelectlist(); 
         //年式を作成
-        $year = date('Y');
-        $years = array();
-        $years += array( "" => "選択してください" ); //selectlistの先頭を空に
-        $years += array( $year => $year );
-        for($i = 1; $i < 20; $i++){
-            $years += array(($year - $i) => ($year - $i)) ;
-        }
+        $years = $this->madeyearSelectlist();
         $data['years'] = $years;
         
         // 作成ビューを表示
@@ -138,15 +130,16 @@ class CarsController extends Controller
         // idの値でタスクを検索して取得
         $car = Car::findOrFail($id);
         $data['car'] = $car;
+        
+        //mst_makersを取得
+        $data['makers'] = Maker::makerSelectlist();
+        //mst_cartypesを取得
+        $data['types'] = Cartype::cartypeSelectlist();
+        //mst_carcolorsを取得
+        $data['colors'] = CarColor::carColorSelectlist(); 
 
         //年式を作成
-        $year = date('Y');
-        $years = array();
-        $years += array( "" => "選択してください" ); //selectlistの先頭を空に
-        $years += array( $year => $year );
-        for($i = 1; $i < 20; $i++){
-            $years += array(($year - $i) => ($year - $i)) ;
-        }
+        $years = $this->madeyearSelectlist();
         $data['years'] = $years;
 
         //車両を保有しているユーザーかチェック
@@ -228,13 +221,7 @@ class CarsController extends Controller
         $data['car'] = $car;
 
         //年式を作成
-        $year = date('Y');
-        $years = array();
-        $years += array( "" => "選択してください" ); //selectlistの先頭を空に
-        $years += array( $year => $year );
-        for($i = 1; $i < 20; $i++){
-            $years += array(($year - $i) => ($year - $i)) ;
-        }
+        $years = $this->madeyearSelectlist();
         $data['years'] = $years;
 
         //車両を保有しているユーザーかチェック
@@ -324,6 +311,18 @@ class CarsController extends Controller
         // トップページへリダイレクトさせる
         return redirect()->route('cars.show', ['id' => $id]);
 
+    }
+    
+    private function madeyearSelectlist()
+    {
+        $year = date('Y');
+        $years = array();
+        $years += array( "" => "選択してください" ); //selectlistの先頭を空に
+        $years += array( $year => $year );
+        for($i = 1; $i < 20; $i++){
+            $years += array(($year - $i) => ($year - $i)) ;
+        }
+        return $years;
     }
     
 }

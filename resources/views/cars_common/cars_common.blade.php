@@ -1,14 +1,14 @@
 <div class="form-group row">
     {{Form::label('maker', 'メーカー',['class' => 'col-form-label col-md-2'])}}
     <!-- メーカーセレクトボックス -->
-    {{Form::select('maker_id', App\Maker::makerSelectlist(),null,['class' => 'form-select col-md-6'])}}
+    {{Form::select('maker_id', $makers,null,['class' => 'form-select col-md-6'])}}
 </div>
 
 <div class="form-group row">
     <!-- 576px以上の画面幅のとき、ラベルは2つ分のカラム幅で表示する指定を追加 -->
     <label class="col-form-label col-md-2">車種</label>
     <!-- 車種セレクトボックス -->
-    {{Form::select('cartype_id', App\Cartype::cartypeSelectlist(),null,['class' => 'form-select col-md-6'])}}
+    {{Form::select('cartype_id', $types,null,['class' => 'form-select col-md-6'])}}
 </div>            
 
 <div class="form-group row">
@@ -24,7 +24,7 @@
 
 <div class="form-group row">
     {{Form::label('color', '色',['class' => 'col-form-label col-md-2'])}}
-    {{Form::select('carcolor_id', App\CarColor::carColorSelectlist(),null,['class' => 'form-select col-md-6'])}}
+    {{Form::select('carcolor_id', $colors,null,['class' => 'form-select col-md-6'])}}
 </div>
 
 <div class="form-group row">
