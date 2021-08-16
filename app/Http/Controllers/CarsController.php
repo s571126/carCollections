@@ -25,10 +25,20 @@ class CarsController extends Controller
         //mst_carcolorsを取得
         $data['colors'] = CarColor::carColorSelectlist(); 
         //tbl_carsを取得
-        $data['cars'] = Car::paginate(10);
+        $data['cars'] = Car::paginate(5);
         $car_totalcnt = Car::count();
         $data['cars_totalcnt'] = $car_totalcnt;
         $data['cars_getcnt'] = $car_totalcnt;
+
+        //検索フォームに設定する値（）
+        $data['input_maker_id'] = "";
+        $data['input_cartype_id'] = "";
+        $data['input_name'] = "";
+        $data['input_price_id'] = "";
+        $data['input_created_at'] = "";
+        $data['input_carcolor_id'] = "";
+        
+        $data['condition'] = [];
 
         // cars.indexビューでそれらを表示
         return view('cars.index', $data);

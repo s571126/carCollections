@@ -54,8 +54,9 @@ class searchCarsController extends Controller
         if (!empty($carcolor_id)){
             $query->where('carcolor_id',$carcolor_id);
         }
-        $data['cars'] = $query->paginate(10);
+
         $data['cars_getcnt'] = $query->count();
+        $data['cars'] = $query->paginate(5);
         $data['cars_totalcnt'] = Car::count();
         
         //mst_makersを取得
@@ -66,6 +67,15 @@ class searchCarsController extends Controller
         $data['colors'] = CarColor::carColorSelectlist(); 
         //tbl_carsを取得
         
+        //検索フォームに入力した値をindex.blade.phpに連携
+        $data['input_maker_id'] = $maker_id;
+        $data['input_cartype_id'] = $cartype_id;
+        $data['input_name'] = $name;
+        $data['input_price_id'] = $price_id;
+        $data['input_created_at'] = $created_at;
+        $data['input_carcolor_id'] = $carcolor_id;
+        
+        $data['condition'] = $request->all();
         return view('cars.index', $data);
     }
 }

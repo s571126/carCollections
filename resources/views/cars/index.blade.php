@@ -11,34 +11,35 @@
                 <div class="form-group row">
                     {{ form::label('maker','メーカー', ['class' => 'form-check-label col-md-2']) }}
                     <!-- メーカーセレクトボックス -->
-                    {{Form::select('maker_id', $makers,null,['class' => 'form-select col-md-2'])}}
+                    {{Form::select('maker_id', $makers,$input_maker_id,['class' => 'form-select col-md-2'])}}
     
                     {{ form::label('cartype','車種', ['class' => 'form-check-label col-md-2']) }}
                     <!-- 車種セレクトボックス -->
-                    {{Form::select('cartype_id', $types,null,['class' => 'form-select col-md-2'])}}
+                    {{Form::select('cartype_id', $types,$input_cartype_id,['class' => 'form-select col-md-2'])}}
                     
                     {{ form::label('car_name','車名', ['class' => 'form-check-label col-md-2']) }}
-                    {{Form::text('name', null, ['class' => 'form-control border-dark col-md-2'])}}
+                    <!--{{Form::text('name', null, ['class' => 'form-control border-dark col-md-2'])}}-->
+                    {{Form::text('name', $input_name, ['class' => 'form-control border-dark col-md-2'])}}
                 </div>
             
                 <div class="form-group row">
                     {{ form::label('price','価格', ['class' => 'form-check-label col-md-2']) }}
                     <!-- 価格セレクトボックス -->
                     <select class="form-select col-md-2" name=price_id>
-                        <option value="" selected>選択してください</option>
-                        <option value="1">～999999</option>
-                        <option value="2">1,000,000～2,999,999</option>
-                        <option value="3">3,000,000～4,999,999</option>
-                        <option value="4">5,000,000～</option>
+                        <option value="">選択してください</option>
+                        <option value="1" @if($input_price_id==1) selected @endif>～999999</option>
+                        <option value="2" @if($input_price_id==2) selected @endif>1,000,000～2,999,999</option>
+                        <option value="3" @if($input_price_id==3) selected @endif>3,000,000～4,999,999</option>
+                        <option value="4" @if($input_price_id==4) selected @endif>5,000,000～</option>
                     </select>
                     
                     {{ form::label('created_at','登録日', ['class' => 'form-check-label col-md-2']) }}
                     <!-- 登録日選択フォーム -->
-                    <input class="col-md-2" type=date name="created_at">
+                    <input class="col-md-2" type=date name="created_at" value={{$input_created_at}}>
                     
                     {{ form::label('color','色', ['class' => 'form-check-label col-md-2']) }}
                     <!-- 色セレクトボックス -->
-                    {{Form::select('carcolor_id', $colors,null,['class' => 'form-select col-md-2'])}}
+                    {{Form::select('carcolor_id', $colors,$input_carcolor_id,['class' => 'form-select col-md-2'])}}
                 </div>
             </div>
             
@@ -46,11 +47,13 @@
             
             <div class="p-2">
                 <div class="d-flex flex-row justify-content-end mt-4">
-                    {{ Form::reset('条件をクリア', ['class' => 'btn btn-secondary mr-4']) }}
+                    <!--{{ Form::reset('条件をクリア', ['class' => 'btn btn-secondary mr-4']) }}-->
+                    <input class="btn btn-secondary mr-4" type=button value="条件をクリア" onclick="location.href='/'">
                     {{ Form::submit('条件で検索', ['name' => 'update', 'class' => 'btn btn-primary']) }}
                 </div>
             </div>
         {{ Form::close() }}
+
     </header> 
     
     <div class="mt-4 border border-dark">
@@ -127,7 +130,7 @@
             </div>
             <div class="text-center mt-4">
                 <!-- ページネーションのリンク -->
-                {{ $cars->links() }}
+                {{ $cars->appends($condition)->links() }}
             </div>
         </div>
     </div>
